@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:anthorflix/movie_details.dart';
 import 'package:anthorflix/movies_widget.dart';
 import 'package:anthorflix/movie.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,9 @@ class AnthorflixApp extends StatefulWidget {
 }
 
 class _MainWindow extends State<AnthorflixApp> {
-  List<Movie> _movies = List<Movie>.empty();
+  //List<Movie> _movies = List<Movie>.empty();
+  List<Movie> _movies = List.empty(growable: true);
+  String _movie_name = "Harry Potter";
 
   @override
   void initState(){
@@ -21,18 +24,22 @@ class _MainWindow extends State<AnthorflixApp> {
   }
 
   void _populateAllMovies() async {
-    final movies = await _fetchOMDbMovies();
+    //final movies = await _fetchOMDbMovies();
+    Movie movie = await _fetchOMDbMovies();
     setState(() {
-      _movies = movies;
+      //_movies = movies;
+      _movies.add(movie);
     });
   }
 
-  Future<List<Movie>> _fetchOMDbMovies() async {
-    final response =  await http.get(Uri.parse("http://www.omdbapi.com/?s=Harry Potter&page=2&apikey=3d041907"));
+  //Future<List<Movie>>
+  Future<Movie> _fetchOMDbMovies() async {
+    final response =  await http.get(Uri.parse("http://www.omdbapi.com/?t=$_movie_name&plot=full&page=2&apikey=3d041907"));
     if (response.statusCode == 200){
       final result = jsonDecode(response.body);
-      Iterable list = result["Search"];
-      return list.map((movie) => Movie.fromJson(movie)).toList();
+      //Iterable list = result["Search"];
+      //return list.map((movie) => Movie.fromJson(movie)).toList();
+      return  Movie.fromJson(result);
     }
     else {
       throw Exception("Loading movies has failed");
@@ -46,10 +53,20 @@ class _MainWindow extends State<AnthorflixApp> {
       theme: ThemeData(primarySwatch: Colors.green),
       home: Scaffold(
         appBar: AppBar(
+          leading: Image.asset('assets/images/anthor.png'),
           title: const Text('Anthorflix'),
         ),
-        body: MoviesWidget(movies: _movies)
-
+        body: MoviesWidget(movies: _movies),
+        floatingActionButton: const FloatingActionButton(
+          tooltip: 'Add a movie',
+          onPressed: null,
+          child: Icon(
+            Icons.add,
+            color: Colors.green,
+            size: 40,
+          ),
+          backgroundColor: Colors.black,
+        ),
       ),
     );
   }

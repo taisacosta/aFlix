@@ -1,4 +1,5 @@
 import 'package:anthorflix/movie.dart';
+import 'package:anthorflix/movie_details.dart';
 import 'package:flutter/material.dart';
 
 class MoviesWidget extends StatelessWidget{
