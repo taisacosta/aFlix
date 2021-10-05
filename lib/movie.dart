@@ -1,3 +1,4 @@
+/// Classe que representa o filme e suas características
 class Movie{
   final String title;
   final String year;
@@ -7,6 +8,7 @@ class Movie{
   final String actors;
   final String genre;
   final String released;
+  final String plot;
 
   Movie({
     required this.imdbId,
@@ -17,6 +19,7 @@ class Movie{
     required this.actors,
     required this.genre,
     required this.released,
+    required this.plot,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json){
@@ -28,7 +31,8 @@ class Movie{
       director: json["Director"],
       actors: json["Actors"],
       genre: json["Genre"],
-      released: json["Released"]
+      released: json["Released"],
+      plot: json["Plot"],
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:anthorflix/movie_details.dart';
 import 'package:anthorflix/movies_widget.dart';
 import 'package:anthorflix/movie.dart';
 import 'package:flutter/material.dart';
@@ -13,37 +12,59 @@ class AnthorflixApp extends StatefulWidget {
 }
 
 class _MainWindow extends State<AnthorflixApp> {
-  //List<Movie> _movies = List<Movie>.empty();
-  List<Movie> _movies = List.empty(growable: true);
-  String _movie_name = "Harry Potter";
+  Movie _movie = Movie(imdbId: "id", title: "title", poster: "poster", year: "year",
+      director: "director", actors: "actors", genre: "genre", released: "released",
+      plot: "plot");
+  String _movie_name = " ";
+  Icon _searchIcon = Icon(Icons.search);
+  Widget _appBarTitle = Text( 'Anthorflix' );
+  String _searchText = "";
+  final TextEditingController _textController = TextEditingController();
 
   @override
   void initState(){
     super.initState();
-    _populateAllMovies();
   }
 
-  void _populateAllMovies() async {
-    //final movies = await _fetchOMDbMovies();
-    Movie movie = await _fetchOMDbMovies();
+  void _populateMovieContent() async {
+    Movie movie = await _fetchOMDbMovie();
     setState(() {
-      //_movies = movies;
-      _movies.add(movie);
+      _movie = movie;
     });
   }
 
-  //Future<List<Movie>>
-  Future<Movie> _fetchOMDbMovies() async {
-    final response =  await http.get(Uri.parse("http://www.omdbapi.com/?t=$_movie_name&plot=full&page=2&apikey=3d041907"));
+  Future<Movie> _fetchOMDbMovie() async {
+    final response =  await http.get(
+        Uri.parse("http://www.omdbapi.com/?t=$_movie_name&plot=full&apikey=3d041907"));
     if (response.statusCode == 200){
       final result = jsonDecode(response.body);
-      //Iterable list = result["Search"];
-      //return list.map((movie) => Movie.fromJson(movie)).toList();
       return  Movie.fromJson(result);
     }
     else {
       throw Exception("Loading movies has failed");
     }
+  }
+  void _searchPressed() {
+    setState(() {
+      if (_searchIcon.icon == Icons.search) {
+        _searchIcon = Icon(Icons.close);
+        _appBarTitle = TextField(
+          controller: _textController,
+          decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Digite nome do filme',
+          ),
+          onSubmitted: (String str){
+            _movie_name = str;
+            _populateMovieContent();
+          }
+        );
+      } else {
+        _searchIcon = Icon(Icons.search);
+        _appBarTitle = Text('Anthorflix');
+        _textController.clear();
+      }
+    });
   }
 
   @override
@@ -53,10 +74,18 @@ class _MainWindow extends State<AnthorflixApp> {
       theme: ThemeData(primarySwatch: Colors.green),
       home: Scaffold(
         appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              onPressed: (){
+                _searchPressed();
+              },
+              icon: _searchIcon,
+            ),
+          ],
           leading: Image.asset('assets/images/anthor.png'),
-          title: const Text('Anthorflix'),
+          title: _appBarTitle,
         ),
-        body: MoviesWidget(movies: _movies),
+        body: MoviesWidget(movie: _movie),
         floatingActionButton: const FloatingActionButton(
           tooltip: 'Add a movie',
           onPressed: null,
