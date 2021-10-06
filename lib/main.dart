@@ -12,7 +12,7 @@ class AnthorflixApp extends StatefulWidget {
 }
 
 class _MainWindow extends State<AnthorflixApp> {
-  Movie _movie = Movie(imdbId: "id", title: "title", poster: "poster", year: "year",
+  Movie _movie = Movie(imdbId: "id", title: "title", poster: "https://www.uninassau.edu.br/sites/mauriciodenassau.edu.br/files/fields/imagemLateral/noticias/2018/04/700_fo38843930_9e45ae83c58d8b25cef06bb9ea6a7a05.jpg", year: "year",
       director: "director", actors: "actors", genre: "genre", released: "released",
       plot: "plot");
   String _movie_name = " ";
