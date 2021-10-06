@@ -44,6 +44,7 @@ class _MainWindow extends State<AnthorflixApp> {
       throw Exception("Loading movies has failed");
     }
   }
+
   void _searchPressed() {
     setState(() {
       if (_searchIcon.icon == Icons.search) {
@@ -87,7 +88,7 @@ class _MainWindow extends State<AnthorflixApp> {
         ),
         body: MoviesWidget(movie: _movie),
         floatingActionButton: const FloatingActionButton(
-          tooltip: 'Add a movie',
+          tooltip: 'Adicionar filme',
           onPressed: null,
           child: Icon(
             Icons.add,

@@ -1,14 +1,20 @@
-/// Classe que representa o filme e suas características
+import 'dart:ffi';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+/// Classe que representa o filme e suas características, e também as avaliações
 class Movie{
-  final String title;
-  final String year;
-  final String imdbId;
-  final String poster;
-  final String director;
-  final String actors;
-  final String genre;
-  final String released;
-  final String plot;
+  String title;
+  String year;
+  String imdbId;
+  String poster;
+  String director;
+  String actors;
+  String genre;
+  String released;
+  String plot;
+  double rating = 0;
+  List<String> comments = [];
 
   Movie({
     required this.imdbId,
@@ -19,7 +25,7 @@ class Movie{
     required this.actors,
     required this.genre,
     required this.released,
-    required this.plot,
+    required this.plot
   });
 
   factory Movie.fromJson(Map<String, dynamic> json){
