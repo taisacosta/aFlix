@@ -12,6 +12,7 @@ class MoviesWidget extends StatefulWidget {
 }
 
 class _MoviesWidget extends State<MoviesWidget>{
+  final TextEditingController _textController = TextEditingController();
 
   @override
   void initState(){
@@ -34,12 +35,14 @@ class _MoviesWidget extends State<MoviesWidget>{
           ),
           Center(
             child: RatingBar.builder(
+              itemSize: 50,
               minRating: 0,
+              maxRating: 5,
               itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+              initialRating: widget.movie.rating,
               onRatingUpdate: (rating) {
-                setState(() {
-                  widget.movie.rating = rating;
-                });
+                setState(() {widget.movie.rating = rating;}
+                );
               },
             ),
           ),
@@ -73,6 +76,27 @@ class _MoviesWidget extends State<MoviesWidget>{
               "Comentários:",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
           ),
+          TextField(
+              controller: _textController,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.add_comment),
+                hintText: 'Digite seu comentário...',
+              ),
+              onSubmitted: (String str){                
+                setState(() {
+                  widget.movie.comments.add(str);
+                });
+              }
+          ),
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+                    itemCount: widget.movie.comments.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Text(widget.movie.comments[index]);
+                   }
+            ),
+          )
       ],
     );
   }

@@ -1,7 +1,3 @@
-import 'dart:ffi';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 /// Classe que representa o filme e suas características, e também as avaliações
 class Movie{
   String title;
@@ -14,7 +10,7 @@ class Movie{
   String released;
   String plot;
   double rating = 0;
-  List<String> comments = [];
+  List<String> comments = ["User 1: comentário 1", "User 2: comentário 2"];
 
   Movie({
     required this.imdbId,
