@@ -1,5 +1,5 @@
 name: anthorflix
-description: A new Flutter project.
+description: O Anthorflix(™) é uma aplicação revolucionária para compartilhar com seus amigos os filmes que você viu e suas avaliações. Você pode cadastrar os filmes que assistiu, avaliá-los e comentar as avaliações de seus amigos..
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -31,6 +31,7 @@ dependencies:
     sdk: flutter
   http: ^0.13.3
   flutter_rating_bar: ^4.0.0
+  json_store: ^1.4.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

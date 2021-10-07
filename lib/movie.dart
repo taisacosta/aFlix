@@ -10,7 +10,7 @@ class Movie{
   String released;
   String plot;
   double rating = 0;
-  List<String> comments = ["User 1: comentário 1", "User 2: comentário 2"];
+  List<String> comments = [];
 
   Movie({
     required this.imdbId,

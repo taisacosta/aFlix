@@ -54,7 +54,7 @@ class _MainWindow extends State<AnthorflixApp> {
           controller: _textController,
           decoration: const InputDecoration(
               prefixIcon: Icon(Icons.search),
-              hintText: 'Digite nome do filme',
+              hintText: 'Digite nome do filme...',
           ),
           onSubmitted: (String str){
             _movie_name = str;
@@ -88,15 +88,22 @@ class _MainWindow extends State<AnthorflixApp> {
           title: _appBarTitle,
         ),
         body: MoviesWidget(movie: _movie),
-        floatingActionButton: const FloatingActionButton(
-          tooltip: 'Adicionar filme',
-          onPressed: null,
-          child: Icon(
-            Icons.add,
-            color: Colors.green,
-            size: 40,
-          ),
-          backgroundColor: Colors.black,
+        floatingActionButton:Stack(
+          children: const <Widget>[
+            Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                        tooltip: 'Adicionar filme',
+                        onPressed: null,
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.green,
+                          size: 40,
+                        ),
+                        backgroundColor: Colors.black,
+                      ),
+            ),
+          ],
         ),
       ),
     );

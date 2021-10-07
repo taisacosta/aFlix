@@ -96,7 +96,8 @@ class _MoviesWidget extends State<MoviesWidget>{
                       return Text(widget.movie.comments[index]);
                    }
             ),
-          )
+          ),
+         ElevatedButton(onPressed: () {}, child: Text("Salvar"))
       ],
     );
   }
