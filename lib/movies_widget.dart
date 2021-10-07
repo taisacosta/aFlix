@@ -15,6 +15,12 @@ class _MoviesWidget extends State<MoviesWidget>{
   final TextEditingController _textController = TextEditingController();
 
   @override
+  void dispose(){
+    _textController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState(){
     super.initState();
   }
@@ -85,6 +91,7 @@ class _MoviesWidget extends State<MoviesWidget>{
               onSubmitted: (String str){                
                 setState(() {
                   widget.movie.comments.add(str);
+                  _textController.clear();
                 });
               }
           ),
@@ -97,7 +104,6 @@ class _MoviesWidget extends State<MoviesWidget>{
                    }
             ),
           ),
-         ElevatedButton(onPressed: () {}, child: Text("Salvar"))
       ],
     );
   }

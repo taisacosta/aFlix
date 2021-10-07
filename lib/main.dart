@@ -1,30 +1,68 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:anthorflix/movies_widget.dart';
 import 'package:anthorflix/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
-void main() => runApp(AnthorflixApp());
+void main() => runApp(const AnthorflixApp());
 
 class AnthorflixApp extends StatefulWidget {
+  const AnthorflixApp({Key? key}) : super(key: key);
+
   @override
   _MainWindow createState() => _MainWindow();
 }
 
 class _MainWindow extends State<AnthorflixApp> {
-  Movie _movie = Movie(imdbId: "id", title: "Title",
+  Movie _movie = Movie(imdbId: "id", title: "Título",
       poster: "https://www.uninassau.edu.br/sites/mauriciodenassau.edu.br/files/fields/imagemLateral/noticias/2018/04/700_fo38843930_9e45ae83c58d8b25cef06bb9ea6a7a05.jpg",
-      year: "Year", director: "director", actors: "actors", genre: "genre", released: "released",
-      plot: "plot");
+      year: "Ano", director: "Diretores", actors: "Elenco", genre: "Gênero", released: "Lançamento",
+      plot: "descrição");
   String _movie_name = " ";
   Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = Text( 'Anthorflix' );
-  String _searchText = "";
   final TextEditingController _textController = TextEditingController();
+  late File _jsonFile;
+  Directory _directory = Directory(" ");
+  final String _file_name = "movie_DB.json";
+  bool _fileExists = false;
+  late Map<String, dynamic> _fileContent;
+
+  void saveData(){
+    writeToFile(_movie.imdbId, _movie.toString());
+  }
+  void createFile(Map<String, dynamic> content, Directory dir, String fileName){
+    File file = File(_directory.path + "/" + _file_name);
+    file.createSync();
+    _fileExists = true;
+    file.writeAsStringSync(json.encode(content));
+  }
+
+  void writeToFile(String key, dynamic value){
+    Map<String, dynamic> content = {key: value};
+    if (_fileExists) {
+      Map<String, dynamic> jsonFileContent = json.decode(_jsonFile.readAsStringSync());
+      jsonFileContent.addAll(content);
+      _jsonFile.writeAsStringSync(json.encode(jsonFileContent));
+    } else {
+      createFile(content, _directory, _file_name);
+    }
+    setState(() => _fileContent = json.decode(_jsonFile.readAsStringSync()));
+  }
 
   @override
   void initState(){
     super.initState();
+    getApplicationDocumentsDirectory().then((Directory directory){
+      _directory = directory;
+      _jsonFile = File(_directory.path + "/" + _file_name);
+      _fileExists = _jsonFile.existsSync();
+      if(_fileExists){
+        setState(() => _fileContent = json.decode(_jsonFile.readAsStringSync()));
+      }
+    });
   }
 
   void _populateMovieContent() async {
@@ -89,19 +127,19 @@ class _MainWindow extends State<AnthorflixApp> {
         ),
         body: MoviesWidget(movie: _movie),
         floatingActionButton:Stack(
-          children: const <Widget>[
-            Align(
-              alignment: Alignment.bottomRight,
+          children: <Widget>[
+            Align (
+              alignment: Alignment.bottomCenter,
               child: FloatingActionButton(
-                        tooltip: 'Adicionar filme',
-                        onPressed: null,
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.green,
-                          size: 40,
-                        ),
-                        backgroundColor: Colors.black,
-                      ),
+              tooltip: 'Salvar avaliação',
+              onPressed: () => saveData(),
+              child: const Icon(
+                Icons.save,
+                color: Colors.green,
+                size: 40,
+              ),
+              backgroundColor: Colors.black,
+            ),
             ),
           ],
         ),
